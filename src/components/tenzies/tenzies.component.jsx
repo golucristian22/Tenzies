@@ -10,9 +10,12 @@ const Tenzies = () => {
     const onlyNumbers = numbersArray.map((obj) => obj.number);
     const allEqual = onlyNumbers.every((num) => num === onlyNumbers[0]);
     if (allEqual) {
+      const holdNumbers = document.querySelectorAll(".tenzies__number");
+      holdNumbers.forEach((number) =>
+        number.classList.add("tenzies__number--hold")
+      );
       setGameOver(true);
     }
-    console.log(onlyNumbers, allEqual, gameOver);
   }, [numbersArray]);
 
   function generateNewNumbers() {
