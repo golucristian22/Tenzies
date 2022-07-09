@@ -1,9 +1,23 @@
 import "./tenzies.styles.scss";
+import { useState } from "react";
 import numbersObj from "../../numbers";
 
 const Tenzies = () => {
-  console.log(numbersObj);
-  const numbers = numbersObj.map((number, id) => {
+  const [numbersArray, setNumbersArray] = useState(numbersObj);
+  console.log(numbersArray);
+
+  function generateNewNumbers() {
+    setNumbersArray((prevNumbers) =>
+      prevNumbers.map((number) => {
+        return {
+          ...number,
+          number: Math.floor(Math.random() * 6 + 1),
+        };
+      })
+    );
+  }
+
+  const numbers = numbersArray.map((number, id) => {
     return (
       <div key={id} className="tenzies__number">
         {number.number}
@@ -23,7 +37,9 @@ const Tenzies = () => {
         </header>
         <div className="tenzies__content">
           <div className="tenzies__numbers-container">{numbers}</div>
-          <button className="tenzies__button">Roll</button>
+          <button className="tenzies__button" onClick={generateNewNumbers}>
+            Roll
+          </button>
         </div>
       </div>
     </div>
