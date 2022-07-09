@@ -1,10 +1,19 @@
 import "./tenzies.styles.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import numbersObj from "../../numbers";
 
 const Tenzies = () => {
   const [numbersArray, setNumbersArray] = useState(numbersObj);
-  console.log(numbersArray);
+  const [gameOver, setGameOver] = useState(false);
+
+  useEffect(() => {
+    const onlyNumbers = numbersArray.map((obj) => obj.number);
+    const allEqual = onlyNumbers.every((num) => num === onlyNumbers[0]);
+    if (allEqual) {
+      setGameOver(true);
+    }
+    console.log(onlyNumbers, allEqual, gameOver);
+  }, [numbersArray]);
 
   function generateNewNumbers() {
     setNumbersArray((prevNumbers) =>
@@ -39,6 +48,16 @@ const Tenzies = () => {
     setNumbersArray(addHoldNumberArr);
   }
 
+  function resetGame() {
+    setGameOver(false);
+    setNumbersArray(numbersObj);
+    generateNewNumbers();
+    const holdNumbers = document.querySelectorAll(".tenzies__number");
+    holdNumbers.forEach((number) => {
+      number.classList.remove("tenzies__number--hold");
+    });
+  }
+
   const numbers = numbersArray.map((number, id) => {
     return (
       <div key={id} id={id + 1} className="tenzies__number" onClick={addHold}>
@@ -59,9 +78,15 @@ const Tenzies = () => {
         </header>
         <div className="tenzies__content">
           <div className="tenzies__numbers-container">{numbers}</div>
-          <button className="tenzies__button" onClick={generateNewNumbers}>
-            Roll
-          </button>
+          {gameOver ? (
+            <button className="tenzies__button" onClick={resetGame}>
+              Reset Game
+            </button>
+          ) : (
+            <button className="tenzies__button" onClick={generateNewNumbers}>
+              Roll
+            </button>
+          )}
         </div>
       </div>
     </div>
