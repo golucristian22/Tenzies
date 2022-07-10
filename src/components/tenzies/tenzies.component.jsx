@@ -8,12 +8,10 @@ const Tenzies = () => {
 
   useEffect(() => {
     const onlyNumbers = numbersArray.map((obj) => obj.number);
+    const onlyHold = numbersArray.map((obj) => obj.hold);
     const allEqual = onlyNumbers.every((num) => num === onlyNumbers[0]);
-    if (allEqual) {
-      const holdNumbers = document.querySelectorAll(".tenzies__number");
-      holdNumbers.forEach((number) =>
-        number.classList.add("tenzies__number--hold")
-      );
+    const allHold = onlyHold.every((hold) => hold);
+    if (allEqual && allHold) {
       setGameOver(true);
     }
   }, [numbersArray]);
