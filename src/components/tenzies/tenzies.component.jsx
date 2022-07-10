@@ -4,7 +4,9 @@ import numbersObj from "../../numbers";
 
 const Tenzies = () => {
   const [numbersArray, setNumbersArray] = useState(numbersObj);
+  const [rolledTimes, setRolledTimes] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  console.log(rolledTimes);
 
   useEffect(() => {
     const onlyNumbers = numbersArray.map((obj) => obj.number);
@@ -17,6 +19,7 @@ const Tenzies = () => {
   }, [numbersArray]);
 
   function generateNewNumbers() {
+    setRolledTimes((prevRolledTimes) => prevRolledTimes + 1);
     setNumbersArray((prevNumbers) =>
       prevNumbers.map((number) => {
         if (number.hold) {
@@ -53,6 +56,7 @@ const Tenzies = () => {
     setGameOver(false);
     setNumbersArray(numbersObj);
     generateNewNumbers();
+    setRolledTimes(0);
     const holdNumbers = document.querySelectorAll(".tenzies__number");
     holdNumbers.forEach((number) => {
       number.classList.remove("tenzies__number--hold");
@@ -89,6 +93,9 @@ const Tenzies = () => {
             </button>
           )}
         </div>
+        <p>
+          You Rolled the Dice {rolledTimes} {rolledTimes > 1 ? "Times" : "Time"}
+        </p>
       </div>
     </div>
   );
