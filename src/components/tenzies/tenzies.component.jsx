@@ -14,7 +14,9 @@ const Tenzies = () => {
 
   const [isTimerOn, setIsTimerOn] = useState(false);
 
-  const [bestTime, setBestTime] = useState(1000000);
+  const [bestTime, setBestTime] = useState(
+    localStorage.getItem("bestTime") || 1000000
+  );
 
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -74,8 +76,15 @@ const Tenzies = () => {
 
   function resetGame() {
     setBestTime((prevBestTime) => {
-      return prevBestTime > time ? time : prevBestTime;
+      if (prevBestTime > time) {
+        localStorage.setItem("bestTime", time);
+        return time;
+      } else {
+        return prevBestTime;
+      }
     });
+    localStorage.setItem("bestTime", bestTime);
+    console.log(localStorage.getItem("bestTime"));
     setIsGameOver(false);
     setNumbersArray(numbersObj);
     generateNewNumbers();
