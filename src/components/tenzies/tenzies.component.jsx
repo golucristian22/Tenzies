@@ -11,7 +11,10 @@ const Tenzies = () => {
   const minutes = Math.floor((time / 60000) % 60);
   const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
   const mSeconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
+
   const [isTimerOn, setIsTimerOn] = useState(false);
+
+  const [bestTime, setBestTime] = useState(1000000);
 
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -62,7 +65,17 @@ const Tenzies = () => {
     setNumbersArray(addHoldNumberArr);
   }
 
+  function convertToTime(time) {
+    const minutes = Math.floor((time / 60000) % 60);
+    const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
+    const mSeconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
+    return `${minutes}:${seconds}:${mSeconds}`;
+  }
+
   function resetGame() {
+    setBestTime((prevBestTime) => {
+      return prevBestTime > time ? time : prevBestTime;
+    });
     setIsGameOver(false);
     setNumbersArray(numbersObj);
     generateNewNumbers();
@@ -98,6 +111,10 @@ const Tenzies = () => {
                 } ${seconds} seconds and ${mSeconds} miliseconds.`
               : "Roll until all dice are the same. Click each dice to freeze it at itscurrent value between rolls."}
           </p>
+          <p className="tenzies__bestTime">
+            Your best time is:{" "}
+            {bestTime === 1000000 ? "0:00:00" : convertToTime(bestTime)}
+          </p>
         </header>
         <div className="tenzies__content">
           <div className="tenzies__numbers-container">{numbers}</div>
@@ -111,14 +128,12 @@ const Tenzies = () => {
             </button>
           )}
         </div>
-        {rolledTimes ? (
-          <p className="tenzies__rollCounter">
-            You Rolled the Dice <b>{rolledTimes}</b>
-            {rolledTimes > 1 ? " Times" : " Time"}
-          </p>
-        ) : (
-          <p>Roll the Dice</p>
-        )}
+        <p className="tenzies__rollCounter">
+          {rolledTimes
+            ? `You Rolled the Dice ${rolledTimes}
+            ${rolledTimes > 1 ? " Times" : " Time"}`
+            : `Roll the Dice`}
+        </p>
         <Timer
           isTimerOn={isTimerOn}
           time={time}
