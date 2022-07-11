@@ -6,6 +6,7 @@ import Timer from "../timer/timer.component";
 const Tenzies = () => {
   const [numbersArray, setNumbersArray] = useState(numbersObj);
   const [rolledTimes, setRolledTimes] = useState(0);
+  const [time, setTime] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -21,6 +22,7 @@ const Tenzies = () => {
   }, [numbersArray]);
 
   function generateNewNumbers() {
+    setIsTimerOn(true);
     setRolledTimes((prevRolledTimes) => prevRolledTimes + 1);
     setNumbersArray((prevNumbers) =>
       prevNumbers.map((number) => {
@@ -42,7 +44,7 @@ const Tenzies = () => {
     const addHoldNumberArr = [];
     event.target.classList.toggle("tenzies__number--hold");
     for (let i = 0; i < numbersArray.length; i++) {
-      if (numbersArray[i].id == event.target.id) {
+      if (numbersArray[i].id === Number(event.target.id)) {
         addHoldNumberArr.push({
           ...numbersArray[i],
           hold: !numbersArray[i].hold,
@@ -60,6 +62,8 @@ const Tenzies = () => {
     setNumbersArray(numbersObj);
     generateNewNumbers();
     setRolledTimes(0);
+    setIsTimerOn(false);
+    setTime(0);
     const holdNumbers = document.querySelectorAll(".tenzies__number");
     holdNumbers.forEach((number) => {
       number.classList.remove("tenzies__number--hold");
@@ -104,7 +108,7 @@ const Tenzies = () => {
         ) : (
           <p>Roll the Dice.</p>
         )}
-        <Timer isTimerOn={isTimerOn} />
+        <Timer isTimerOn={isTimerOn} time={time} changeTime={setTime} />
       </div>
     </div>
   );
