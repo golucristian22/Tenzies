@@ -6,8 +6,13 @@ import Timer from "../timer/timer.component";
 const Tenzies = () => {
   const [numbersArray, setNumbersArray] = useState(numbersObj);
   const [rolledTimes, setRolledTimes] = useState(0);
+
   const [time, setTime] = useState(0);
+  const minutes = Math.floor((time / 60000) % 60);
+  const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
+  const mSeconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
   const [isTimerOn, setIsTimerOn] = useState(false);
+
   const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
@@ -82,10 +87,16 @@ const Tenzies = () => {
     <div className="tenzies__container">
       <div className="tenzies">
         <header className="tenzies__header">
-          <h2 className="tenzies__heading">Tenzies</h2>
-          <p className="tenzies___description">
-            Roll until all dice are the same. Click each die to freeze it at its
-            current value between rolls.
+          <h2 className="tenzies__heading">
+            {isGameOver ? "Congratulation!" : "Tenzies"}
+          </h2>
+          <p className="tenzies__description">
+            {isGameOver
+              ? `The game took you ${rolledTimes} Rolls and You finished it in:  
+                ${
+                  minutes > 0 ? `${minutes} minute` : ""
+                } ${seconds} seconds and ${mSeconds} miliseconds.`
+              : "Roll until all dice are the same. Click each dice to freeze it at itscurrent value between rolls."}
           </p>
         </header>
         <div className="tenzies__content">
@@ -102,13 +113,20 @@ const Tenzies = () => {
         </div>
         {rolledTimes ? (
           <p>
-            You Rolled the Dice {rolledTimes}{" "}
-            {rolledTimes > 1 ? "Times" : "Time"}.
+            You Rolled the Dice {rolledTimes}
+            {rolledTimes > 1 ? " Times" : " Time"}
           </p>
         ) : (
-          <p>Roll the Dice.</p>
+          <p>Roll the Dice</p>
         )}
-        <Timer isTimerOn={isTimerOn} time={time} changeTime={setTime} />
+        <Timer
+          isTimerOn={isTimerOn}
+          time={time}
+          changeTime={setTime}
+          minutes={minutes}
+          seconds={seconds}
+          mSeconds={mSeconds}
+        />
       </div>
     </div>
   );

@@ -2,11 +2,7 @@ import "./timer.styles.scss";
 import { useEffect } from "react";
 
 const Timer = (props) => {
-  const { isTimerOn, time, changeTime } = props;
-
-  const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
-  const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
-  const mSeconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
+  const { isTimerOn, changeTime, minutes, seconds, mSeconds } = props;
 
   useEffect(() => {
     let interval = null;
@@ -23,7 +19,7 @@ const Timer = (props) => {
   }, [isTimerOn, changeTime]);
 
   return (
-    <div>
+    <div className="tenzies__timer">
       <span>{minutes}:</span>
       <span>{seconds}:</span>
       <span>{mSeconds}</span>
