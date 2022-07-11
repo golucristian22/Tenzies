@@ -1,12 +1,13 @@
 import "./tenzies.styles.scss";
 import { useState, useEffect } from "react";
 import numbersObj from "../../numbers";
+import Timer from "../timer/timer.component";
 
 const Tenzies = () => {
   const [numbersArray, setNumbersArray] = useState(numbersObj);
   const [rolledTimes, setRolledTimes] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
-  console.log(rolledTimes);
+  const [isTimerOn, setIsTimerOn] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     const onlyNumbers = numbersArray.map((obj) => obj.number);
@@ -14,7 +15,8 @@ const Tenzies = () => {
     const allEqual = onlyNumbers.every((num) => num === onlyNumbers[0]);
     const allHold = onlyHold.every((hold) => hold);
     if (allEqual && allHold) {
-      setGameOver(true);
+      setIsTimerOn(false);
+      setIsGameOver(true);
     }
   }, [numbersArray]);
 
@@ -49,11 +51,12 @@ const Tenzies = () => {
         addHoldNumberArr.push(numbersArray[i]);
       }
     }
+    setIsTimerOn(true);
     setNumbersArray(addHoldNumberArr);
   }
 
   function resetGame() {
-    setGameOver(false);
+    setIsGameOver(false);
     setNumbersArray(numbersObj);
     generateNewNumbers();
     setRolledTimes(0);
@@ -83,7 +86,7 @@ const Tenzies = () => {
         </header>
         <div className="tenzies__content">
           <div className="tenzies__numbers-container">{numbers}</div>
-          {gameOver ? (
+          {isGameOver ? (
             <button className="tenzies__button" onClick={resetGame}>
               Reset Game
             </button>
@@ -93,9 +96,15 @@ const Tenzies = () => {
             </button>
           )}
         </div>
-        <p>
-          You Rolled the Dice {rolledTimes} {rolledTimes > 1 ? "Times" : "Time"}
-        </p>
+        {rolledTimes ? (
+          <p>
+            You Rolled the Dice {rolledTimes}{" "}
+            {rolledTimes > 1 ? "Times" : "Time"}.
+          </p>
+        ) : (
+          <p>Roll the Dice.</p>
+        )}
+        <Timer isTimerOn={isTimerOn} />
       </div>
     </div>
   );
