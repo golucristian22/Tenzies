@@ -112,8 +112,8 @@ const Tenzies = () => {
           )}
         </div>
         {rolledTimes ? (
-          <p>
-            You Rolled the Dice {rolledTimes}
+          <p className="tenzies__rollCounter">
+            You Rolled the Dice <b>{rolledTimes}</b>
             {rolledTimes > 1 ? " Times" : " Time"}
           </p>
         ) : (

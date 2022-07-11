@@ -28,7 +28,9 @@
     margin: 3.3rem auto 0.8rem auto;
   }
 
-  &__description {
+  &__description,
+  &__rollCounter,
+  &__timer {
     font-family: Inter;
     font-size: 13px;
     font-weight: 400;
@@ -92,6 +94,9 @@
     font-family: "Karla";
     font-size: 16px;
     font-weight: bold;
-    margin: 0 0 10px 0;
+  }
+
+  &__rollCounter {
+    margin: 18px auto 10px auto;
   }
 }
